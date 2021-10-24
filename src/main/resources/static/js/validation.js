@@ -13,7 +13,10 @@ function formValidCheck() {
         return false;
     } else {
         content.submit();
-        alert("이미지 생성이 되었습니다! 오른쪽 이미지 버튼을 눌러 확인해주세요")
+        setTimeout(function(){
+            alert("이미지 생성이 되었습니다! 오른쪽 이미지 버튼을 눌러 확인해주세요")
+            imgChange();
+        },1000);
         return true;
     }
 }
