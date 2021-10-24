@@ -14,7 +14,7 @@ import java.io.IOException;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class QrService_Implement implements QrService {
+public class QrService_Impl implements QrService {
     Generator gen = new Generator();
 
     @Override
