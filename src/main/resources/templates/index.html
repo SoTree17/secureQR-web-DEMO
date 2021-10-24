@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>DEMO</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
     <div class="divContainer">
         <div class="divLeft">
-            <img class="sotree" src="/img/SoTree.png" alt="SoTree17"/>
+            <div style="text-align: center;">
+                <img class="sotree" src="/img/SoTree.png" alt="SoTree17"/>
+            </div>
             <form class="form-main">
                 <div>
                     <div class="item">
@@ -17,7 +18,7 @@
                         <input class="input-main" type="text" name="authUrl" />
                     </div>
                     <div class="item">
-                        <p class="item-p">QR Data</p>
+                        <p class="item-p">Data</p>
                         <input class="input-main" type="text" name="data" />
                     </div>
                     <div class="item">
@@ -33,11 +34,22 @@
                         <input class="input-main" type="number" name="height" />
                     </div>
                 </div>
-                <input type='submit' value='QR 코드 생성'>
+                <div style="text-align: center;">
+                    <input class="button-main" type='submit' value='QR 코드 생성'>
+                </div>
             </form>
         </div>
         <div class="divRight">
-            asdasdasd
+            <div style="text-align: center;">
+                <img id="qr-img" src="??" onError="this.src='/img/no-image.png'">
+            </div>
+            QR Data
+            <div>
+                <textarea id="qr-data" readonly>
+{
+}
+                </textarea>
+            </div>
         </div>
     </div>
 </body>
