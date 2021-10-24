@@ -11,7 +11,8 @@
             <div style="text-align: center;">
                 <img class="sotree" src="/img/SoTree.png" alt="SoTree17"/>
             </div>
-            <form class="form-main" action="/requestQR" method="post">
+            <form class="form-main" name="QrForm" action="/requestQR" method="post"">
+            <!--onsubmit="return formValidCheck();-->
                 <div>
                     <div class="item">
                         <p class="item-p">Auth URL</p>
@@ -35,13 +36,17 @@
                     </div>
                 </div>
                 <div style="text-align: center;">
-                    <input class="button-main" type='submit' value='QR 코드 생성'>
+                    <!--<input id="submit-button" class="button-main" type='submit' value='QR 코드 생성'/>-->
+                    <button class="button-main" type="button" onclick="formValidCheck()">
+                        QR 코드 생성
+                    </button>
                 </div>
             </form>
         </div>
         <div class="divRight">
             <div style="text-align: center;">
-                <img id="qr-img" src="/img/secureQR_image.png" onError="this.src='/img/no-image.png'">
+                <!--<img id="qr-img" src="/img/secureQR_image.png" onError="this.src='/img/no-image.png'">-->
+                <img id="qr-img" src="??" onError="this.src='/img/no-image.png'" alt="qrImg" onclick="imgChange()">
             </div>
             QR Data
             <div>
@@ -52,5 +57,7 @@
             </div>
         </div>
     </div>
+    <script src="/js/validation.js"></script>
+    <script src="/js/imgChange.js"></script>
 </body>
 </html>
