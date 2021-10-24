@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -47,7 +47,7 @@
         <div class="divRight">
             <div>
                 QR코드 암호화, 해시 방법 추가
-                <form class="form-select">
+                <form class="form-select" method="post" action="/addCrypto">
                     <select name="hash">
                         <option value="MD5">MD5</option>
                         <option value="SHA256">SHA256</option>
@@ -61,8 +61,7 @@
                 </form>
             </div>
             Status
-            <textarea id="secure-data" readonly>
-            </textarea>
+            <textarea id="secure-data" th:value="${cryptoStatus}" th:text="${cryptoStatus}" readonly></textarea>
             <hr>
             <div style="text-align: center;">
                 <img id="qr-img" src="??" onError="this.src='/img/no-image.png'" onclick="imgChange()">

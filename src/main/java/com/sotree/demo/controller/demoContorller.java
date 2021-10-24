@@ -1,8 +1,11 @@
 package com.sotree.demo.controller;
 
+import com.sotree.demo.domain.CryptoDTO;
 import com.sotree.demo.domain.QrDTO;
 import com.sotree.demo.service.QrService.QrService;
+import com.sotree.demo.service.QrService.QrService_Impl;
 import com.sotree.demo.service.httpRequesting.RequestService;
+import crypto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +15,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.script.ScriptException;
 import java.io.IOException;
@@ -29,12 +31,9 @@ import java.nio.file.Paths;
 @Controller
 public class demoContorller {
 
-    //Service instance here
-    @Autowired
     private QrService qrService;
-    @Autowired
-    private RequestService requestService;
-    //private SecureQrCryptoArray arr = new SecureQrCryptoArray();
+    private SecureQrCryptoArray arr = new SecureQrCryptoArray();
+    private String cryptoStatus = "";
 
 
     @RequestMapping(value="/")
@@ -42,42 +41,45 @@ public class demoContorller {
         return "index";
     }
 
-    @PostMapping("/requestQR")
-    public String requestQR(QrDTO qrDTO) throws IOException, ScriptException {
-
-        String requestPATH = "api/v1/secureQR/generator";
-        String localPath="C:\\TestQR\\qrImg\\Server-Test.png";
-        //String staticPath = "src/main/resources/static/img/secureQR_image.png";
-        //String staticPath = "secureQR_image.png";
-        log.info(qrDTO.toString());
-        byte[] result = requestService.requestQrImage(qrDTO, requestPATH);
-        try {
-            qrService.createQRImage(result, localPath);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+    @PostMapping("/create")
+    public String createQR(QrDTO qrDTO)  {
 
         return "redirect:";
     }
 
-    @GetMapping("/display")
-    public ResponseEntity<Resource> display(@RequestParam(value="filename") String filename){
-        String path = "C:\\TestQR\\qrImg\\";
-        Resource resource = new FileSystemResource(path+filename);
+    @RequestMapping(value = "/addCrypto", method = RequestMethod.POST)
+    public ModelAndView addCryptoToArray(CryptoDTO cryptoDTO, ModelAndView mav) {
+        //ModelAndView mav = new ModelAndView();
+        mav.setViewName("index");
 
-        if(!resource.exists()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        try {
+            String hash_method = cryptoDTO.getHash();
+            String crypto_method = cryptoDTO.getCrypto();
 
-        HttpHeaders header = new HttpHeaders();
-        Path filePath = null;
-        try{
-            filePath = Paths.get(path+filename);
-            header.add("Content-Type", Files.probeContentType(filePath));
-        } catch (IOException e) {
+            SecureQrCrypto crypto = null;
+            SecureQrHash hash = null;
+
+            if (crypto_method.equals("AES256")) crypto = new SecureQrCryptoAES256();
+            else if (crypto_method.equals("RSA")) crypto = new SecureQrCryptoRSA();
+
+            if (hash_method.equals("MD5")) hash = new SecureQrHashMD5();
+            else if (hash_method.equals("SHA256")) hash = new SecureQrHashSHA256();
+            else if (hash_method.equals("SHA512")) hash = new SecureQrHashSHA512();
+
+            this.arr.add(hash, crypto);
+
+            String tmp = "index:" + Integer.toString(arr.crypto_size() - 1) + " ( " + hash_method + ", " + crypto_method + " )\n";
+            cryptoStatus += tmp;
+
+            // log.info(cryptoStatus);
+
+            mav.addObject("cryptoStatus", cryptoStatus);
+
+            return mav;
+
+        } catch (Exception e) {
             e.printStackTrace();
+            return mav;
         }
-        return new ResponseEntity<>(resource, header, HttpStatus.OK);
-
     }
 }
