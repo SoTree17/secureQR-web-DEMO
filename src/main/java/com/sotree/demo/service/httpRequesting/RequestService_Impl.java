@@ -1,9 +1,11 @@
 package com.sotree.demo.service.httpRequesting;
 
 import com.google.gson.Gson;
+import com.sotree.demo.domain.AdditionDTO;
 import com.sotree.demo.domain.QrDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -52,5 +54,29 @@ public class RequestService_Impl implements RequestService {
         client.close();
 
         return binary;
+    }
+
+    @Override
+    public int requestAddCrypto(AdditionDTO aDTO, String resourcePath) throws IOException {
+
+        CloseableHttpClient client = HttpClients.createDefault();
+        String BaseUrl = aDTO.getAuthUrl();
+        String requestJson = new Gson().toJson(aDTO);
+        String requestUrl = BaseUrl + resourcePath;
+
+        //Set HTTP Header, Body
+        HttpPost httpPost = new HttpPost(requestUrl);
+        StringEntity entity = new StringEntity(requestJson);
+        httpPost.setEntity(entity);
+        httpPost.setHeader("Accept", "application/json");
+        httpPost.setHeader("Content-type", "application/json");
+
+        //응답 담기
+        HttpResponse httpResponse = client.execute(httpPost);
+        int status = httpResponse.getStatusLine().getStatusCode();
+        log.info(String.valueOf(status));
+
+
+        return status;
     }
 }

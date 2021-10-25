@@ -1,5 +1,3 @@
-let status = false;
-
 function formValidCheck() {
     const content = document.QrForm;
     const authURL = content.authUrl.value;
@@ -9,11 +7,23 @@ function formValidCheck() {
     const height = content.height.value;
 
     if (!authURL || !data || !c_index || !width || !height) {
-        alert("빈칸을 채워주세요.");
+        alert("빈칸을 채워주세요!");
         return false;
     } else {
         content.submit();
-        alert("이미지 생성이 되었습니다! 오른쪽 이미지 버튼을 눌러 확인해주세요")
+        alert("이미지가 생성이 되었습니다! 오른쪽에서 확인해주세요")
+        return true;
+    }
+}
+function formValidCheck_Register(){
+    const content = document.cryptoForm;
+    const authURL = content.authUrl.value;
+    const token = content.token.value;
+    if(!authURL || !token){
+        alert("저희의 QR 코드 라이브러리를 적용한 서버의 주소 또는 토큰 정보 적어주세요!");
+        return false;
+    }else{
+        alert("QR 코드 해싱 및 암호화 방식이 추가되었습니다!")
         return true;
     }
 }
