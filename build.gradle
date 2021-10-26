@@ -27,7 +27,7 @@ dependencies {
 	// 아파치, httppost
 	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
 	// secureQR-module library
-	implementation files('ext_libs/secureQR-module-0.0.8.jar')
+	implementation files('ext_libs/secureQR-module-0.0.9.jar')
 }
 
 test {

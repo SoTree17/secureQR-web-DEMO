@@ -1,9 +1,7 @@
-package com.sotree.demo.service.QrService;
+package com.sotree.demo.service.ClientService;
 
 import com.sotree.demo.domain.QrDTO;
-import crypto.SecureQrCryptoAES256;
 import crypto.SecureQrCryptoArray;
-import crypto.SecureQrHashMD5;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

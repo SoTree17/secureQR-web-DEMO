@@ -2,7 +2,7 @@ package com.sotree.demo.controller;
 
 import com.sotree.demo.domain.AdditionDTO;
 import com.sotree.demo.domain.QrDTO;
-import com.sotree.demo.service.QrService.QrService;
+import com.sotree.demo.service.ClientService.QrService;
 import com.sotree.demo.service.httpRequesting.RequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.sotree.demo.service.QrService;
+package com.sotree.demo.service.ClientService;
 
 import com.sotree.demo.domain.QrDTO;
 import crypto.SecureQrCryptoArray;
