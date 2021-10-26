@@ -3,9 +3,11 @@ package com.sotree.demo.controller;
 import com.sotree.demo.domain.ClientSide.AdditionDTO;
 import com.sotree.demo.domain.ClientSide.QrDTO;
 import com.sotree.demo.service.ClientService.ClientService;
+import com.sotree.demo.service.PathDetertimant.PathDeterminant;
 import com.sotree.demo.service.httpRequesting.RequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.jni.OS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -38,8 +40,13 @@ public class demoContorller {
     @Autowired
     private RequestService requestService;
 
+    //OS별 저장 경로
+    PathDeterminant pathDeterminant = new PathDeterminant();
+
+
     /* 컨트롤러내에서 사용되는 변수들 */
     private StringBuffer stringBuffer = new StringBuffer();
+    private String DIRECTORY = pathDeterminant.getOS_TYPE();
     private String FILENAME; // requestQR 시 마다, 현재시간에 따라 랜덤하게 파일이름이 결정되어 지정됨.
     private String read; // secureQR-module의 Reader라이브러리를 읽어서 data형태 저장
 
@@ -51,8 +58,8 @@ public class demoContorller {
     @PostMapping("/requestQR")
     public String requestQR(QrDTO qrDTO, RedirectAttributes rttr) throws IOException, ScriptException {
 
-        String requestPATH = "api/v1/secureQR/generator";
-        String localPath = "C:\\TestQR\\qrImg\\";
+        final String requestPATH = "api/v1/secureQR/generator";
+
         FILENAME = clientService.randomImgName(".png");
         //String staticPath = "src/main/resources/static/img/secureQR_image.png";
         //String staticPath = "secureQR_image.png";
@@ -60,13 +67,13 @@ public class demoContorller {
 
         byte[] result = requestService.requestQrImage(qrDTO, requestPATH); // 입력받은 endpoint의 지정된 api 호출
         try {
-            clientService.createQRImage(result, localPath + FILENAME);
+            clientService.createQRImage(result, DIRECTORY + FILENAME);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         Reader reader = new Reader();
-        read = reader.readSecureQRCode(localPath + FILENAME);
+        read = reader.readSecureQRCode(DIRECTORY + FILENAME);
         log.info(read);
 
         rttr.addFlashAttribute("imgName", "?filename=" + FILENAME);
@@ -125,8 +132,8 @@ public class demoContorller {
      */
     @GetMapping("/display")
     public ResponseEntity<Resource> display(@RequestParam(value = "filename") String filename) throws IOException {
-        String path = "C:\\TestQR\\qrImg\\";
-        Resource resource = new FileSystemResource(path + filename);
+        /*String path = "C:\\TestQR\\qrImg\\";*/
+        Resource resource = new FileSystemResource(DIRECTORY + filename);
 
         if (!resource.exists()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -135,7 +142,7 @@ public class demoContorller {
         HttpHeaders header = new HttpHeaders();
         Path filePath = null;
         try {
-            filePath = Paths.get(path + filename);
+            filePath = Paths.get(DIRECTORY + filename);
             header.add("Content-Type", Files.probeContentType(filePath));
         } catch (IOException e) {
             e.printStackTrace();
