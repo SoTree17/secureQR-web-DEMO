@@ -1,8 +1,8 @@
 package com.sotree.demo.controller;
 
-import com.sotree.demo.domain.AdditionDTO;
-import com.sotree.demo.domain.QrDTO;
-import com.sotree.demo.service.ClientService.QrService;
+import com.sotree.demo.domain.ClientSide.AdditionDTO;
+import com.sotree.demo.domain.ClientSide.QrDTO;
+import com.sotree.demo.service.ClientService.ClientService;
 import com.sotree.demo.service.httpRequesting.RequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class demoContorller {
 
     //Service instance here
     @Autowired
-    private QrService qrService;
+    private ClientService clientService;
     @Autowired
     private RequestService requestService;
 
@@ -53,14 +53,14 @@ public class demoContorller {
 
         String requestPATH = "api/v1/secureQR/generator";
         String localPath = "C:\\TestQR\\qrImg\\";
-        FILENAME = qrService.randomImgName(".png");
+        FILENAME = clientService.randomImgName(".png");
         //String staticPath = "src/main/resources/static/img/secureQR_image.png";
         //String staticPath = "secureQR_image.png";
         log.info(qrDTO.toString());
 
         byte[] result = requestService.requestQrImage(qrDTO, requestPATH); // 입력받은 endpoint의 지정된 api 호출
         try {
-            qrService.createQRImage(result, localPath + FILENAME);
+            clientService.createQRImage(result, localPath + FILENAME);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,7 +1,7 @@
 package com.sotree.demo.service.httpRequesting;
 
-import com.sotree.demo.domain.AdditionDTO;
-import com.sotree.demo.domain.QrDTO;
+import com.sotree.demo.domain.ClientSide.AdditionDTO;
+import com.sotree.demo.domain.ClientSide.QrDTO;
 
 import java.io.IOException;
 
