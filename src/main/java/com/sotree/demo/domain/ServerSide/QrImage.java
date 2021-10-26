@@ -1,4 +1,4 @@
-package com.sotree.demo.domain;
+package com.sotree.demo.domain.ServerSide;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdditionDTO {
-    private String authUrl;
-    private String token;
-    private String crypto;
-    private String hash;
+public class QrImage {
+    private byte[] binary;
 }

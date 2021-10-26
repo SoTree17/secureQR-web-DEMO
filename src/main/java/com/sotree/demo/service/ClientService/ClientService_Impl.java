@@ -1,6 +1,6 @@
 package com.sotree.demo.service.ClientService;
 
-import com.sotree.demo.domain.QrDTO;
+import com.sotree.demo.domain.ClientSide.QrDTO;
 import crypto.SecureQrCryptoArray;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ import java.util.Date;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class QrService_Impl implements QrService {
+public class ClientService_Impl implements ClientService {
     Generator gen = new Generator();
 
     @Override

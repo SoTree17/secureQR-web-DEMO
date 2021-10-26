@@ -1,4 +1,4 @@
-package com.sotree.demo.domain;
+package com.sotree.demo.domain.ClientSide;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class QrDTO {
+public class AdditionDTO {
     private String authUrl;
-    private String data;
-    private int c_index;
-    private int width;
-    private int height;
+    private String token;
+    private String crypto;
+    private String hash;
 }

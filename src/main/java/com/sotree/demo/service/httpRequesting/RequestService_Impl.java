@@ -1,8 +1,8 @@
 package com.sotree.demo.service.httpRequesting;
 
 import com.google.gson.Gson;
-import com.sotree.demo.domain.AdditionDTO;
-import com.sotree.demo.domain.QrDTO;
+import com.sotree.demo.domain.ClientSide.AdditionDTO;
+import com.sotree.demo.domain.ClientSide.QrDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpResponse;
