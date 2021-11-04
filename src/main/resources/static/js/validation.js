@@ -26,11 +26,12 @@ function formValidCheck_Register() {
     const content = document.cryptoForm;
     const authURL = content.authUrl.value;
     const token = content.token.value;
+
     if (!authURL || !token) {
         alert("저희의 QR 코드 라이브러리를 적용한 서버의 주소 또는 토큰 정보 적어주세요!");
         return false;
     } else {
-        alert("QR 코드 해싱 및 암호화 방식이 추가되었습니다!")
+        alert("QR 코드 해싱 및 암호화 방식 추가합니다!")
         return true;
     }
 }

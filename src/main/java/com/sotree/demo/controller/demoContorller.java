@@ -96,11 +96,13 @@ public class demoContorller {
         String requestPATH = "api/v1/secureQR/addCrypto";
         log.info(aDTO.toString());
 
-        int statusCode = requestService.requestAddCrypto(aDTO, requestPATH);
-        HttpStatus status = HttpStatus.valueOf(statusCode);
+
         String hashName = "";
         String cryptoName = "";
         try {
+            int statusCode = requestService.requestAddCrypto(aDTO, requestPATH);
+            HttpStatus status = HttpStatus.valueOf(statusCode);
+
             int hash_num = Integer.parseInt(aDTO.getHash());
             int crypto_num = Integer.parseInt(aDTO.getCrypto());
             if (hash_num == 0) { hashName = "MD5"; }
@@ -111,25 +113,25 @@ public class demoContorller {
             if (crypto_num == 0) { cryptoName = "AES256"; }
             else if (crypto_num == 1) { cryptoName = "RSA"; }
             else { cryptoName =""; }
+            stringBuffer.append(status + " 추가된 해시:" + hashName+ ", 추가된 암호화:" + cryptoName + "\n");  // Status log 용
 
-        }catch(Exception e){
-            hashName = "";
-            cryptoName= "";
+            if (status == HttpStatus.OK) {
+                log.info("addCrypto Success");
+            } else if (status == HttpStatus.UNAUTHORIZED) {
+                log.info("Unauthorized Access - Wrong Token value " + aDTO.getToken());
+            } else if (status == HttpStatus.INTERNAL_SERVER_ERROR) {
+                log.info("Internal Server Error");
+            } else if (status == HttpStatus.BAD_REQUEST) {
+                log.info("Not supported Hashing or Crypto method");
+            } else {
+                log.info("Not defined Status code-");
+            }
         }
-        stringBuffer.append(status + " 추가된 해시:" + hashName+ ", 추가된 암호화:" + cryptoName + "\n");  // Status log 용
-
-        if (status == HttpStatus.OK) {
-            log.info("addCrypto Success");
-        } else if (status == HttpStatus.UNAUTHORIZED) {
-            log.info("Unauthorized Access - Wrong Token value " + aDTO.getToken());
-        } else if (status == HttpStatus.INTERNAL_SERVER_ERROR) {
-            log.info("Internal Server Error");
-        } else if (status == HttpStatus.BAD_REQUEST) {
-            log.info("Not supported Hashing or Crypto method");
-        } else {
-            log.info("Not defined Status code-");
+        catch(Exception e){
+            HttpStatus status = HttpStatus.BAD_REQUEST;
+            stringBuffer.append(status + " URI does not specifiy a valid host name\n");  // Status log 용
+            log.info("URI does not specify a valid host name");
         }
-
         /* 앞서 만들어진 값이 있다면 같이 redirect하게 해줌 */
         rttr.addFlashAttribute("imgName", "?filename=" + FILENAME);
         rttr.addFlashAttribute("addCrypto", stringBuffer.toString());
