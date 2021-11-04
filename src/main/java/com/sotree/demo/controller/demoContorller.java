@@ -85,6 +85,7 @@ public class demoContorller {
     /**
      * 서버에 연결해서, 해싱 방식, 암호화 방식을 추가하는 로직 처리
      * 토큰 정보 SOTREE17_SERVER_REQUEST 가 필요함
+     *
      * @param aDTO
      * @param rttr
      * @return
@@ -97,8 +98,25 @@ public class demoContorller {
 
         int statusCode = requestService.requestAddCrypto(aDTO, requestPATH);
         HttpStatus status = HttpStatus.valueOf(statusCode);
+        String hashName = "";
+        String cryptoName = "";
+        try {
+            int hash_num = Integer.parseInt(aDTO.getHash());
+            int crypto_num = Integer.parseInt(aDTO.getCrypto());
+            if (hash_num == 0) { hashName = "MD5"; }
+            else if (hash_num == 1) { hashName = "SHA256"; }
+            else if (hash_num == 2) { hashName = "SHA512"; }
+            else { hashName = ""; }
 
-        stringBuffer.append(status + " \n");  // Status log 용
+            if (crypto_num == 0) { cryptoName = "AES256"; }
+            else if (crypto_num == 1) { cryptoName = "RSA"; }
+            else { cryptoName =""; }
+
+        }catch(Exception e){
+            hashName = "";
+            cryptoName= "";
+        }
+        stringBuffer.append(status + " 추가된 해시:" + hashName+ ", 추가된 암호화:" + cryptoName + "\n");  // Status log 용
 
         if (status == HttpStatus.OK) {
             log.info("addCrypto Success");
