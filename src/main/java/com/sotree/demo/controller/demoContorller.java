@@ -50,7 +50,10 @@ public class demoContorller {
     private String FILENAME; // requestQR 시 마다, 현재시간에 따라 랜덤하게 파일이름이 결정되어 지정됨.
     private String read; // secureQR-module의 Reader라이브러리를 읽어서 data형태 저장
 
-    @RequestMapping(value = "/")
+    private int index = 0;
+
+
+    @GetMapping("/")
     public String home() {
         return "index";
     }
@@ -113,9 +116,12 @@ public class demoContorller {
             if (crypto_num == 0) { cryptoName = "AES256"; }
             else if (crypto_num == 1) { cryptoName = "RSA"; }
             else { cryptoName =""; }
-            stringBuffer.append(status + " 추가된 해시:" + hashName+ ", 추가된 암호화:" + cryptoName + "\n");  // Status log 용
+            //stringBuffer.append(status + " 추가된 해시:" + hashName+ ", 추가된 암호화:" + cryptoName + "\n");  // Status log 용
+            stringBuffer.append(status);
 
             if (status == HttpStatus.OK) {
+                stringBuffer.append("\tindex: " + index + " - " + "(추가된 해시:" + hashName+ ", 추가된 암호화:" + cryptoName + ")" );
+                index++;
                 log.info("addCrypto Success");
             } else if (status == HttpStatus.UNAUTHORIZED) {
                 log.info("Unauthorized Access - Wrong Token value " + aDTO.getToken());
@@ -126,6 +132,7 @@ public class demoContorller {
             } else {
                 log.info("Not defined Status code-");
             }
+            stringBuffer.append("\n");
         }
         catch(Exception e){
             HttpStatus status = HttpStatus.BAD_REQUEST;
